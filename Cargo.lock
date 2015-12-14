@@ -1,4 +1,4 @@
 [root]
-name = "advent_of_code"
+name = "advent_of_rust"
 version = "0.1.0"
 
