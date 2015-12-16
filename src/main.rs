@@ -18,7 +18,7 @@ fn main() {
     let path = Path::new("resources/day1.txt");
     let display = path.display();
 
-    let mut file = match File::open(&path) {               
+    let mut file = match File::open(&path) {
         Ok(file) => file,
         Err(e) => panic!("Couldn't open {}: {}", display, Error::description(&e))
     };
@@ -38,7 +38,7 @@ fn main() {
         };
         if !basement_visited && floor == -1 {
             basement_visited = true;
-            println!("Santa entered the basement on {}'th direction", count);   
+            println!("Santa entered the basement on {}'th direction", count);
         }
     }
 
@@ -51,10 +51,10 @@ fn main() {
     let (mut paper_amount, mut ribbon_length) = (0i32, 0i32);
 
     let path2 = Path::new("resources/day2.txt");
-    let display = path2.display();    
-    let file2 = match File::open(&path2) {               
+    let display2 = path2.display();
+    let file2 = match File::open(&path2) {
         Ok(file) => file,
-        Err(e) => panic!("Couldn't open {}: {}", display, Error::description(&e))
+        Err(e) => panic!("Couldn't open {}: {}", display2, Error::description(&e))
     };
 
     let input_contents = BufReader::new(&file2);
@@ -80,4 +80,64 @@ fn main() {
 
     println!("The required square feet of paper is {}", paper_amount);
     println!("Elves also neet {} feet of ribbon", ribbon_length);
+
+    let path3 = Path::new("resources/day3.txt");
+    let display3 = path3.display();
+    let mut file3 = match File::open(&path3) {
+        Ok(file) => file,
+        Err(e) => panic!("Couldn't open {}: {}", display3, Error::description(&e))
+    };
+
+    let mut visited_houses: Vec<(i32, i32)> = Vec::new();
+    let mut santa_position = (0, 0);
+    let mut robo_position = (0, 0);
+    visited_houses.push(santa_position);
+
+    let mut directions2 = String::new();
+    match file3.read_to_string(&mut directions2) {
+        Err(e) => panic!("Couldn't read {}: {}", display, Error::description(&e)),
+        Ok(_) => {}
+    }
+
+    for d in directions2.chars() {
+        match d {
+            '^' => {santa_position.1 += 1},
+            'v' => {santa_position.1 -= 1},
+            '>' => {santa_position.0 += 1},
+            '<' => {santa_position.0 -= 1},
+            _ => panic!("Bad instruction input")
+        }
+        visited_houses.push(santa_position);
+    }
+    visited_houses.sort();
+    visited_houses.dedup();
+    println!("Santa delivered presents to {} houses", visited_houses.len());
+
+    santa_position = (0, 0);
+    visited_houses.clear();
+    visited_houses.push(santa_position);
+
+    const SANTAS_TURN: bool = true;
+    const ROBOS_TURN: bool = false;
+
+    let mut turn = SANTAS_TURN;
+
+    for d in directions2.chars() {
+        let position = if turn == SANTAS_TURN { &mut santa_position } else { &mut robo_position };
+
+        match d {
+            '^' => {position.1 += 1},
+            'v' => {position.1 -= 1},
+            '>' => {position.0 += 1},
+            '<' => {position.0 -= 1},
+            _ => panic!("Bad instruction input")
+        }
+
+        visited_houses.push(*position);
+
+        turn = if turn == SANTAS_TURN { ROBOS_TURN } else { SANTAS_TURN }
+    }
+    visited_houses.sort();
+    visited_houses.dedup();
+    println!("With Robo-Santa they delivered presents to {} houses", visited_houses.len());
 }
