@@ -81,6 +81,11 @@ fn main() {
     println!("The required square feet of paper is {}", paper_amount);
     println!("Elves also neet {} feet of ribbon", ribbon_length);
 
+
+    // Day 3 and I still haven't splitted the code into chunks
+    // ... will do that tomorrow
+    println!("#Day 3");
+
     let path3 = Path::new("resources/day3.txt");
     let display3 = path3.display();
     let mut file3 = match File::open(&path3) {
