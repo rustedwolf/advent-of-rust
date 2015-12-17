@@ -1,9 +1,34 @@
+extern crate crypto;
+
 use std::io::prelude::*;
 use std::io::BufReader;
 use std::fs::File;
 use std::path::Path;
 use std::error::Error;
 use std::cmp::min;
+use crypto::md5::Md5;
+use crypto::digest::Digest;
+
+fn get_smallest_number(input: &str, start_text: &str) -> i32 {
+
+    let mut smallest_number = 0i32;
+    let mut md = Md5::new();
+
+    'search: loop {
+        let input_str = input.to_string() + &smallest_number.to_string();
+        md.input_str(&input_str);
+        let out_str = md.result_str();
+
+        if out_str.starts_with(&start_text) {
+            break 'search;
+        } else { 
+            md.reset();
+            smallest_number += 1;
+        }
+    }
+
+    smallest_number
+}
 
 fn main() {
 
@@ -84,7 +109,7 @@ fn main() {
 
     // Day 3 and I still haven't splitted the code into chunks
     // ... will do that tomorrow
-    println!("#Day 3");
+    println!("# Day 3");
 
     let path3 = Path::new("resources/day3.txt");
     let display3 = path3.display();
@@ -145,4 +170,16 @@ fn main() {
     visited_houses.sort();
     visited_houses.dedup();
     println!("With Robo-Santa they delivered presents to {} houses", visited_houses.len());
+
+    // Day 4
+    println!("# Day 4");
+    
+    let input = "iwrupvqb";
+    let mut smallest_number = get_smallest_number(&input, "00000");
+
+    println!("The smallest number for 5 leading zero hash is: {:?}", smallest_number);
+
+    smallest_number = get_smallest_number(&input, "000000");
+      
+    println!("The smallest number for 6 leading zero hash is: {:?}", smallest_number);
 }
