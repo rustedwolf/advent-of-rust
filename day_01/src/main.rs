@@ -5,7 +5,7 @@ use std::error::Error;
 
 fn main() {
 
-    println!("# Day 1");
+    println!("--- Day 1: Not Quite Lisp ---");
 
     let path = Path::new("input/day1.txt");
     let display = path.display();

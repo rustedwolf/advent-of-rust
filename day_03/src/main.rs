@@ -5,7 +5,7 @@ use std::error::Error;
 
 fn main() {
 
-    println!("# Day 3");
+    println!("--- Day 3: Perfectly Spherical Houses in a Vacuum ---");
 
     let path = Path::new("input/day3.txt");
     let display = path.display();

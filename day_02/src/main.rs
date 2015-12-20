@@ -1,4 +1,3 @@
-
 use std::io::prelude::*;
 use std::io::BufReader;
 use std::fs::File;
@@ -8,7 +7,7 @@ use std::cmp::min;
 
 fn main() {
 
-    println!("# Day 2");
+    println!("--- Day 2: I Was Told There Would Be No Math ---");
 
     let (mut paper_amount, mut ribbon_length) = (0i32, 0i32);
 
