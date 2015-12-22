@@ -1,0 +1,4 @@
+[package]
+name = "advent_of_rust_day_6"
+version = "0.1.0"
+authors = ["Ryszard <rustedwolf@gmail.com>"]
