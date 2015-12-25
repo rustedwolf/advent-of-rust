@@ -34,7 +34,7 @@ impl Wire for Circuit {
 
         let gate_instruction = match self.instructions.get(wire_name) {
             Some(instruction) => instruction.clone(),
-            None => panic!("Wire {:?} is missing", wire_name),
+            None => panic!("Instructions for wire {:?} are missing", wire_name),
         };
         let segments: Vec<&str> = gate_instruction.split_whitespace().collect();
 
@@ -51,10 +51,10 @@ impl Wire for Circuit {
                         left_val & right_val
                     },
                     "RSHIFT" => {
-                        left_val.rotate_right(right_val as u32)
+                        left_val >> right_val
                     },
                     "LSHIFT" => {
-                        left_val.rotate_left(right_val as u32)
+                        left_val << right_val
                     },
                     _ => panic!("No instructions for command {:?}", command),
                 }
@@ -83,9 +83,9 @@ fn main() {
 
     println!("--- Day 7: Some Assembly Required ---");
 
-    let mut circuit = Circuit { 
-        instructions: Wires::new(), 
-        signals: Signals::new() 
+    let mut circuit = Circuit {
+        instructions: Wires::new(),
+        signals: Signals::new()
     };
 
     let path = Path::new("input/day_7.txt");
@@ -103,26 +103,33 @@ fn main() {
         circuit.instructions.insert(instruction_parts[0].to_string(), instruction_parts[1].to_string());
     }
 
-    let signal = circuit.get_signal(&"a");
+    let mut signal = circuit.get_signal(&"a");
 
     println!("'a' wire's signal is {}", signal);
+
+    circuit.signals.clear();
+    circuit.signals.insert("b".to_string(), signal);
+
+    signal = circuit.get_signal(&"a");
+
+    println!("After overriding 'b' wire's signal, 'a' wire's signal is {}", signal);
 }
 
 #[test]
 fn test_get_signal() {
-    let mut circuit = Circuit { 
-        instructions: Wires::new(), 
-        signals: Signals::new() 
+    let mut circuit = Circuit {
+        instructions: Wires::new(),
+        signals: Signals::new()
     };
 
-    circuit.instructions.insert("x".to_string(), "123".to_string());
-    circuit.instructions.insert("y".to_string(), "456".to_string());
     circuit.instructions.insert("d".to_string(), "x AND y".to_string());
     circuit.instructions.insert("e".to_string(), "x OR y".to_string());
     circuit.instructions.insert("f".to_string(), "x LSHIFT 2".to_string());
     circuit.instructions.insert("g".to_string(), "y RSHIFT 2".to_string());
     circuit.instructions.insert("h".to_string(), "NOT x".to_string());
     circuit.instructions.insert("i".to_string(), "NOT y".to_string());
+    circuit.instructions.insert("x".to_string(), "123".to_string());
+    circuit.instructions.insert("y".to_string(), "456".to_string());
 
     assert_eq!(circuit.get_signal(&"d"), 72u16);
     assert_eq!(circuit.get_signal(&"e"), 507u16);
