@@ -6,7 +6,7 @@ use std::io::BufReader;
 type Lights = Vec<Vec<bool>>;
 type BrightLights = Vec<Vec<u32>>;
 
-fn switch_ligh(position: &(usize, usize), command: &str, lights: &mut Lights) {
+fn switch_light(position: &(usize, usize), command: &str, lights: &mut Lights) {
     lights[position.0][position.1] = match command {
         "on" => true,
         "off" => false,
@@ -69,7 +69,7 @@ fn main() {
 
         for x in start_x..(end_x + 1) {
             for y in start_y..(end_y + 1) {
-                switch_ligh(&(x, y), command, &mut lights);
+                switch_light(&(x, y), command, &mut lights);
                 switch_brightness(&(x, y), command, &mut bright_lights);
             } 
         }
