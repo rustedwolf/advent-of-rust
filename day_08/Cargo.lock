@@ -1,0 +1,12 @@
+[root]
+name = "advent_of_rust_day_8"
+version = "0.1.0"
+dependencies = [
+ "unescape 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "unescape"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
