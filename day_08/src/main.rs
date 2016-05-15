@@ -38,6 +38,10 @@ fn main() {
         escaped_char_sum += count_escaped(&line_text) - chars.len();
     }
 
-    println!("The unescaped char difference of chars is: {}", unescaped_char_sum);
-    println!("The escaped char difference of chars is: {}", escaped_char_sum);
+    println!("The number of characters of code for string literals 
+minus the number of characters in memory for the values of 
+the strings is: {} \n", unescaped_char_sum);
+    println!("The total number of characters to represent the newly 
+encoded strings minus the number of characters of code 
+in each original string literal is: {}", escaped_char_sum);
 }
