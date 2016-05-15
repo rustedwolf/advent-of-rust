@@ -38,6 +38,6 @@ fn main() {
         escaped_char_sum += count_escaped(&line_text) - chars.len();
     }
 
-    println!("Then unescaped char difference of chars is: {}", unescaped_char_sum); //musi być 1371
-    println!("Then escaped char difference of chars is: {}", escaped_char_sum);
+    println!("The unescaped char difference of chars is: {}", unescaped_char_sum);
+    println!("The escaped char difference of chars is: {}", escaped_char_sum);
 }
