@@ -1,5 +1,6 @@
 fn main() {
     println!("--- Day 10: Elves Look, Elves Say ---");
+    
     let mut sequence = "1113222113".to_string();
 
     for _ in 0..40 {
@@ -7,7 +8,7 @@ fn main() {
     }
     println!("The first length on the sequence is {}", sequence.len());
 
-    for _ in 0..10 {
+    for _ in 40..50 {
         sequence = look_and_say(&sequence);
     }
     println!("The nex length on the sequence is {}", sequence.len());
