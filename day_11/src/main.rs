@@ -1,3 +1,4 @@
+#[macro_use] extern crate lazy_static;
 extern crate regex;
 
 use regex::Regex;
@@ -49,15 +50,35 @@ fn is_valid(input: &str) -> bool {
     !has_forbidden_chars(input)
 }
 
-fn has_forbidden_chars(input: &str) -> bool {
-    let bad_chars = Regex::new(r"i|l|o").unwrap();
-    bad_chars.is_match(input)
+fn has_increasing_straigs_of_three(input: &str) -> bool {
+    let mut abc = "abcdefghijklmnopqrstuvwxyz".to_string();
+    'cheking: for x in 0..abc.len() - 2 {
+        let chars: String = abc.drain(x..x+2).collect();
+        if input.contains(&chars) {
+            return true;
+        }
+    } 
+    false
 }
 
-fn has_increasing_straigs_of_three(inpur: &str) -> bool {
-    unimplemented!();
+fn has_forbidden_chars(input: &str) -> bool {
+    lazy_static! {
+        static ref BAD_CHARS: Regex = Regex::new(r"[ilo]").unwrap();
+    }
+    BAD_CHARS.is_match(input)
 }
 
 fn has_different_double_letters(input: &str) -> bool {
-    unimplemented!();
+    lazy_static! {
+        static ref DOUBLE_CHARS: Regex = Regex::new(r"[a-z]{2}").unwrap();
+    }
+    let captures = DOUBLE_CHARS.captures(input);
+    match captures {
+        Some(expr) => {
+            let mut matches: Vec<_> = expr.iter().collect();
+            matches.dedup();
+            matches.len() > 2
+        },
+        None => false,
+    }
 }
