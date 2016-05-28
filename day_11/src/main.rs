@@ -7,15 +7,21 @@ fn main() {
     println!("--- Day 11: Corporate Policy ---");
 
     let mut password = "cqjxjnds".to_string();
+    password = get_next_password(&password);    
+    println!("The closest valid password is {:?}", password);
+    password = get_next_password(&password);    
+    println!("Next password is {:?}", password);
+}
 
+fn get_next_password(input: &str) -> String {
+    let mut password = input.to_string();
     'running: loop {
         password = increment_password(&password);
         if is_valid(&password) {
             break 'running;
         }
     }
-
-    println!("The closest valid password is {:?}", password);
+    password
 }
 
 fn increment_password(input: &str) -> String {
@@ -25,10 +31,10 @@ fn increment_password(input: &str) -> String {
     'running: loop {
         let (new_char, wrapped) = increment_char(&input_chars[index]);
         input_chars[index] = new_char;
-        if wrapped && index != 0 {
-            index -= 1;
-        } else {
+        if !wrapped {
             break 'running;
+        } else {
+            index = if index != 0 { index - 1 } else { input_chars.len() - 1 };
         }
     }
 
@@ -51,10 +57,9 @@ fn is_valid(input: &str) -> bool {
 }
 
 fn has_increasing_straigs_of_three(input: &str) -> bool {
-    let mut abc = "abcdefghijklmnopqrstuvwxyz".to_string();
-    'cheking: for x in 0..abc.len() - 2 {
-        let chars: String = abc.drain(x..x+2).collect();
-        if input.contains(&chars) {
+    let abc = "abcdefghijklmnopqrstuvwxyz";
+    for x in 0..abc.len() - 2 {
+        if input.contains(&abc[x..x+3]) {
             return true;
         }
     } 
@@ -69,16 +74,44 @@ fn has_forbidden_chars(input: &str) -> bool {
 }
 
 fn has_different_double_letters(input: &str) -> bool {
-    lazy_static! {
-        static ref DOUBLE_CHARS: Regex = Regex::new(r"[a-z]{2}").unwrap();
+    let charsset: Vec<char> = input.chars().collect();
+    let mut matches: Vec<char> = vec![];
+    for x in 0..charsset.len() - 1 {
+        if charsset[x] == charsset[x+1] {
+            matches.push(charsset[x]);
+        }
     }
-    let captures = DOUBLE_CHARS.captures(input);
-    match captures {
-        Some(expr) => {
-            let mut matches: Vec<_> = expr.iter().collect();
-            matches.dedup();
-            matches.len() > 2
-        },
-        None => false,
-    }
+    matches.dedup();
+    matches.len() > 1
+}
+
+#[test]
+fn test_is_valid() {
+    assert_eq!(true, is_valid("abcdffaa"));
+    assert_eq!(true, is_valid("ghjaabcc"));
+}
+
+#[test]
+fn test_for_increasing_straigs_of_three() {
+    assert_eq!(true, has_increasing_straigs_of_three("hijklmmn"));
+    assert_eq!(false, has_increasing_straigs_of_three("abbceffg"));
+    assert_eq!(false, has_increasing_straigs_of_three("abbcegjk"));
+    assert_eq!(true, has_increasing_straigs_of_three("abcdffaa"));
+    assert_eq!(true, has_increasing_straigs_of_three("ghjaabcc"));
+}
+
+#[test]
+fn test_for_forbidden_chars() {
+    assert_eq!(true, has_forbidden_chars("hijklmmn"));
+    assert_eq!(false, has_forbidden_chars("abbceffg"));
+    assert_eq!(false, has_forbidden_chars("abbcegjk"));
+}
+
+#[test]
+fn test_diffrent_double_letters() {
+    assert_eq!(false, has_different_double_letters("hijklmmn"));
+    assert_eq!(true, has_different_double_letters("abbceffg"));
+    assert_eq!(false, has_different_double_letters("abbcegjk"));
+    assert_eq!(true, has_different_double_letters("abcdffaa"));
+    assert_eq!(true, has_different_double_letters("ghjaabcc"));
 }
