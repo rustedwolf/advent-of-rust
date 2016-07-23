@@ -40,8 +40,8 @@ fn gather_ingridients() -> Ingridients {
     let mut ingridients: Ingridients = Vec::new();
 
     for line in reader.lines() {
-        let info_tring = line.unwrap();
-        let ingridient_info: Vec<&str> = info_tring.split(": ").collect();
+        let info_string = line.unwrap();
+        let ingridient_info: Vec<&str> = info_string.split(": ").collect();
         let attribute_infos: Vec<&str> = ingridient_info[1].split(", ").collect();
 
         let mut properties = Vec::new();
