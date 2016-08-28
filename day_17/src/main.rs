@@ -24,7 +24,6 @@ fn get_containers() -> Containers {
         Ok(file) => file,
         Err(reason) => panic!("Coul not open input file: {}", reason),
     };
-
     let reader = BufReader::new(&input);
     let mut containers: Containers = Vec::new();
 
@@ -42,20 +41,23 @@ fn get_available_combinations(capacity: u32, available_containers: &Containers) 
     let mut containers = available_containers.clone();
 
     while containers.len() > 0 {
-        let container: u32 = containers.pop().unwrap();        
-        if container < capacity { 
+        let container: u32 = containers.pop().unwrap();
+
+        if container < capacity {
             let mut available_combinations = get_available_combinations(capacity - container, &containers);
 
             for combination in &mut available_combinations {
                 combination.push(container);
             }
+
             combinations.append(&mut available_combinations);
+
         } else if container == capacity {
             let mut available_combinations: Combinations = vec![vec![container]];
+
             combinations.append(&mut available_combinations);
-        } else {
-            continue; 
-        }        
+
+        } else { continue; }
     }
 
     combinations
