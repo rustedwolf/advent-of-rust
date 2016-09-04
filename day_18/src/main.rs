@@ -22,13 +22,12 @@ fn main() {
     let row_last_pos = broken_lights[0].len() - 1;
 
     lights_bug(&mut broken_lights, last_row, row_last_pos);
-
     for _ in 0..step_count {
         broken_lights = toggle_lights_state(&broken_lights);
         lights_bug(&mut broken_lights, last_row, row_last_pos);
     }
 
-    println!("While lights with stucked sockets have {}", count_shining_lights(&broken_lights));
+    println!("While grid with stucked lights has {}", count_shining_lights(&broken_lights));
 }
 
 fn get_lights() -> Lights {
