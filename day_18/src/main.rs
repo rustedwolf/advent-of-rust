@@ -99,9 +99,12 @@ fn count_shining_lights(lights: &Lights) -> usize {
     shining_lights_count
 }
 
-fn lights_bug(lights: &mut Lights, x: usize, y: usize) {
+/**
+ * Causes lights at the grid corners to be stuck "on"
+ */
+fn lights_bug(lights: &mut Lights, last_row: usize, row_last_pos: usize) {
     lights[0][0] = true;
-    lights[0][y] = true;
-    lights[x][0] = true;
-    lights[x][y] = true;
+    lights[0][row_last_pos] = true;
+    lights[last_row][0] = true;
+    lights[last_row][row_last_pos] = true;
 }
