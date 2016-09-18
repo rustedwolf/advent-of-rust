@@ -4,23 +4,28 @@ use std::io::prelude::*;
 use std::io::BufReader;
 
 type Molecule = String;
+type Molecules = Vec<Molecule>;
 
 struct Replacement {
     molecule: Molecule,
     replacement: Molecule,
 }
-
 type Replacements = Vec<Replacement>;
 
 fn main() {
     println!("--- Day 19: Medicine for Rudolph ---");
 
     let (replacements, molecule) = get_data();
-    let mut molecule_list: Vec<Molecule> = generate_molecule_list(&replacements, &molecule);
-    molecule_list.sort();
-    molecule_list.dedup();
 
+    let molecule_list: Molecules = get_distinct_molecule_list(&replacements, &molecule);
     println!("There are {} of distinct molecules can be created ", molecule_list.len());
+
+    let starting_molecule = "e".to_string();
+    let min_fabrication_steps = get_min_fabrication_steps(&starting_molecule, &molecule, 1, &replacements);
+    match min_fabrication_steps {
+        Some(steps) => println!("The fewest number of steps to fabricate the molecule is {}.", steps),
+        None => println!("Unfortunetly there molecule fabrication is not possible."),
+    }
 }
 
 fn get_data() -> (Replacements, Molecule) {
@@ -63,8 +68,16 @@ fn parse_replacement(info: &str) -> Replacement {
     replacement
 }
 
-fn generate_molecule_list(replacements: &Replacements, molecule: &str) -> Vec<Molecule> {
-    let mut molecule_list: Vec<Molecule> = Vec::new();
+fn get_distinct_molecule_list(replacements: &Replacements, molecule: &str) -> Molecules {
+    let mut molecule_list: Molecules = generate_molecule_list(replacements, molecule);
+    molecule_list.sort();
+    molecule_list.dedup();
+
+    molecule_list
+}
+
+fn generate_molecule_list(replacements: &Replacements, molecule: &str) -> Molecules {
+    let mut molecule_list: Molecules = Vec::new();
 
     for replacement in replacements {
         let mut replacement_molecules = generate_replacement_molecules(&replacement, molecule);
@@ -74,12 +87,12 @@ fn generate_molecule_list(replacements: &Replacements, molecule: &str) -> Vec<Mo
     molecule_list
 }
 
-fn generate_replacement_molecules(replacement: &Replacement, molecule: &str) -> Vec<Molecule> {
-    let mut molecule_list: Vec<Molecule> = Vec::new();
+fn generate_replacement_molecules(replacement: &Replacement, molecule: &str) -> Molecules {
+    let mut molecule_list: Molecules = Vec::new();
     let target_molecules: Vec<_> = molecule.match_indices(&replacement.molecule).collect();
 
     for target_molecule in target_molecules {
-        let new_molecule = replace_molecule(replacement, &target_molecule, molecule);        
+        let new_molecule = replace_molecule(replacement, &target_molecule, molecule);
         molecule_list.push(new_molecule);
     }
 
@@ -95,13 +108,53 @@ fn replace_molecule(replacement: &Replacement, target_molecule: &(usize, &str), 
     new_molecule
 }
 
+fn get_min_fabrication_steps(
+    current_molecule: &Molecule,
+    target_molecule: &Molecule,
+    current_step: u32,
+    replacements: &Replacements
+) -> Option<u32> {
+    let available_molecules = get_distinct_molecule_list(&replacements, &current_molecule);
+
+    if available_molecules.contains(target_molecule) {
+        Some(current_step)
+    } else {
+        let available_steps = get_available_steps(&available_molecules, target_molecule, current_step, replacements);
+        match available_steps.iter().min() {
+            Some(&steps) => Some(steps.clone()),
+            None => None
+        }
+    }
+}
+
+fn get_available_steps(
+    available_molecules: &Molecules,
+    target_molecule: &Molecule,
+    current_step: u32,
+    replacements: &Replacements
+) -> Vec<u32> {
+    let mut available_steps: Vec<u32> = Vec::new();
+
+    for molecule in available_molecules {
+        if molecule.len() <= target_molecule.len() {
+            let min_steps = get_min_fabrication_steps(&molecule, target_molecule, current_step + 1, replacements);
+            match min_steps {
+                Some(steps) => available_steps.push(steps),
+                None => {},
+            }
+        }
+    }
+
+    available_steps
+}
+
 #[test]
 fn test_replacement() {
     let molecule = "HOH".to_string();
     let replacements = vec![
-        Replacement { molecule: "H".to_string(), replacement: "HO".to_string()},
-        Replacement { molecule: "H".to_string(), replacement: "OH".to_string()},
-        Replacement { molecule: "O".to_string(), replacement: "HH".to_string()}
+        Replacement { molecule: "H".to_string(), replacement: "HO".to_string() },
+        Replacement { molecule: "H".to_string(), replacement: "OH".to_string() },
+        Replacement { molecule: "O".to_string(), replacement: "HH".to_string() }
     ];
 
     let mut molecule_list = generate_molecule_list(&replacements, &molecule);
@@ -116,4 +169,21 @@ fn test_replacement() {
     molecule_list.dedup();
 
     assert_eq!(4, molecule_list.len());
+}
+
+#[test]
+fn test_fabrication() {
+    let molecule = "HOH".to_string();
+    let santas_molecule = "HOHOHO".to_string();
+    let starting_molecule = "e".to_string();
+    let replacements = vec![
+        Replacement { molecule: "e".to_string(), replacement: "H".to_string() },
+        Replacement { molecule: "e".to_string(), replacement: "O".to_string() },
+        Replacement { molecule: "H".to_string(), replacement: "HO".to_string() },
+        Replacement { molecule: "H".to_string(), replacement: "OH".to_string() },
+        Replacement { molecule: "O".to_string(), replacement: "HH".to_string() },
+    ];
+
+    assert_eq!(Some(3), get_min_fabrication_steps(&starting_molecule, &molecule, 1, &replacements));
+    assert_eq!(Some(6), get_min_fabrication_steps(&starting_molecule, &santas_molecule, 1, &replacements));
 }
