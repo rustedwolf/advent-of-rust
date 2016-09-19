@@ -136,7 +136,7 @@ fn get_available_steps(
     let mut available_steps: Vec<u32> = Vec::new();
 
     for molecule in available_molecules {
-        if molecule.len() <= target_molecule.len() {
+        if molecule.len() < target_molecule.len() {
             let min_steps = get_min_fabrication_steps(&molecule, target_molecule, current_step + 1, replacements);
             match min_steps {
                 Some(steps) => available_steps.push(steps),
