@@ -114,8 +114,8 @@ fn count_stepts(molecule: &str) -> usize {
     let re_a = Regex::new(r"[A-Z]").unwrap();
     let re_c = Regex::new(r",").unwrap();
 
-    // I disagree with this "- 1", cuz I just don't understand since we're starting from "e"
     re_a.captures_iter(molecule).count() - re_c.captures_iter(molecule).count() - 1
+    // Since e always gives 2 elements in the molecule, we should substract 1
 }
 
 fn real_formula(fake_formula: &str) -> String {
@@ -178,11 +178,4 @@ fn test_regex() {
     let re = Regex::new(r"[A-Z][a-z]?").unwrap();
 
     assert_eq!(3, re.captures_iter(&"HOH").count());
-}
-
-#[test]
-fn test_count_fewest_steps() {
-    assert_eq!(2, count_stepts(&"HOH"));
-    assert_eq!(5, count_stepts(&"HOHOHO"));
-    assert_eq!(11, count_stepts(&"HOHOH(Al, MgMg)OH(F)Al(C)"));
 }
