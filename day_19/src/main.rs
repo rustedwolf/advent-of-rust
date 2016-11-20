@@ -152,23 +152,6 @@ fn test_replacement() {
 }
 
 #[test]
-fn test_fabrication() {
-    let molecule = "HOH".to_string();
-    let santas_molecule = "HOHOHO".to_string();
-    let starting_molecule = "e".to_string();
-    let replacements = vec![
-        Replacement { molecule: "e".to_string(), replacement: "H".to_string() },
-        Replacement { molecule: "e".to_string(), replacement: "O".to_string() },
-        Replacement { molecule: "H".to_string(), replacement: "HO".to_string() },
-        Replacement { molecule: "H".to_string(), replacement: "OH".to_string() },
-        Replacement { molecule: "O".to_string(), replacement: "HH".to_string() },
-    ];
-
-    assert_eq!(Some(3), get_min_fabrication_steps(&starting_molecule, &molecule, 1, &replacements));
-    assert_eq!(Some(6), get_min_fabrication_steps(&starting_molecule, &santas_molecule, 1, &replacements));
-}
-
-#[test]
 fn test_formula_readability() {
     assert_eq!("C(F,Al)", real_formula(&"CRnFYAlAr"));
 }
