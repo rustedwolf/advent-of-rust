@@ -107,7 +107,7 @@ fn replace_molecule(replacement: &Replacement, target_molecule: &(usize, &str), 
     new_molecule
 }
 
-// Now it appears, that Eric Walt's wanted to be a dick by misleading us with a "story".
+// Now it appears, that Eric Wastl wanted to be a dick by misleading us with a "story".
 // So now we have to pay attention is for the goal, not the fluff.
 
 fn count_stepts(molecule: &str) -> usize {
