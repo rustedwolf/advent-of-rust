@@ -1,7 +1,10 @@
+extern crate regex;
+
 use std::path::Path;
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
+use regex::Regex;
 
 type Molecule = String;
 type Molecules = Vec<Molecule>;
@@ -20,12 +23,8 @@ fn main() {
     let molecule_list: Molecules = get_distinct_molecule_list(&replacements, &molecule);
     println!("There are {} of distinct molecules can be created ", molecule_list.len());
 
-    let starting_molecule = "e".to_string();
-    let min_fabrication_steps = get_min_fabrication_steps(&starting_molecule, &molecule, 1, &replacements);
-    match min_fabrication_steps {
-        Some(steps) => println!("The fewest number of steps to fabricate the molecule is {}.", steps),
-        None => println!("Unfortunetly there molecule fabrication is not possible."),
-    }
+    let real_molecule = real_formula(&molecule);
+    println!("To fabricate this molecule you need {} steps", count_stepts(&real_molecule));
 }
 
 fn get_data() -> (Replacements, Molecule) {
@@ -108,44 +107,25 @@ fn replace_molecule(replacement: &Replacement, target_molecule: &(usize, &str), 
     new_molecule
 }
 
-fn get_min_fabrication_steps(
-    current_molecule: &Molecule,
-    target_molecule: &Molecule,
-    current_step: u32,
-    replacements: &Replacements
-) -> Option<u32> {
-    let available_molecules = get_distinct_molecule_list(&replacements, &current_molecule);
+// Now it appears, that Eric Walt's wanted to be a dick by misleading us with a "story".
+// So now we have to pay attention is for the goal, not the fluff.
 
-    if available_molecules.contains(target_molecule) {
-        Some(current_step)
-    } else {
-        let available_steps = get_available_steps(&available_molecules, target_molecule, current_step, replacements);
-        match available_steps.iter().min() {
-            Some(&steps) => Some(steps.clone()),
-            None => None
-        }
-    }
+fn count_stepts(molecule: &str) -> usize {
+    let re_a = Regex::new(r"[A-Z]").unwrap();
+    let re_c = Regex::new(r",").unwrap();
+
+    // I disagree with this "- 1", cuz I just don't understand since we're starting from "e"
+    re_a.captures_iter(molecule).count() - re_c.captures_iter(molecule).count() - 1
 }
 
-fn get_available_steps(
-    available_molecules: &Molecules,
-    target_molecule: &Molecule,
-    current_step: u32,
-    replacements: &Replacements
-) -> Vec<u32> {
-    let mut available_steps: Vec<u32> = Vec::new();
+fn real_formula(fake_formula: &str) -> String {
+    let mut real_formula = fake_formula.to_string();
 
-    for molecule in available_molecules {
-        if molecule.len() < target_molecule.len() {
-            let min_steps = get_min_fabrication_steps(&molecule, target_molecule, current_step + 1, replacements);
-            match min_steps {
-                Some(steps) => available_steps.push(steps),
-                None => {},
-            }
-        }
-    }
+    real_formula = real_formula.replace("Rn", "(");
+    real_formula = real_formula.replace("Ar", ")");
+    real_formula = real_formula.replace("Y", ",");
 
-    available_steps
+    real_formula
 }
 
 #[test]
@@ -186,4 +166,23 @@ fn test_fabrication() {
 
     assert_eq!(Some(3), get_min_fabrication_steps(&starting_molecule, &molecule, 1, &replacements));
     assert_eq!(Some(6), get_min_fabrication_steps(&starting_molecule, &santas_molecule, 1, &replacements));
+}
+
+#[test]
+fn test_formula_readability() {
+    assert_eq!("C(F,Al)", real_formula(&"CRnFYAlAr"));
+}
+
+#[test]
+fn test_regex() {
+    let re = Regex::new(r"[A-Z][a-z]?").unwrap();
+
+    assert_eq!(3, re.captures_iter(&"HOH").count());
+}
+
+#[test]
+fn test_count_fewest_steps() {
+    assert_eq!(2, count_stepts(&"HOH"));
+    assert_eq!(5, count_stepts(&"HOHOHO"));
+    assert_eq!(11, count_stepts(&"HOHOH(Al, MgMg)OH(F)Al(C)"));
 }
