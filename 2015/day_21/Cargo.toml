@@ -1,0 +1,6 @@
+[package]
+name = "day_21"
+version = "0.1.0"
+authors = ["Ryszard Narkiewicz <rustedwolf@gmail.com>"]
+
+[dependencies]
