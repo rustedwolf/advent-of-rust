@@ -61,6 +61,7 @@ fn awesome_password_decryption(input: &str) {
                 if position < 8 {
                     if password[position as usize] == '_' {
                         password[position as usize] = out_str.chars().nth(6).unwrap();
+
                         if char_count == 7 {
                             show_password(&password, &out_str);
                             break;
