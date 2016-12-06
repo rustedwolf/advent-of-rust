@@ -1,0 +1,8 @@
+[package]
+name = "day_05"
+version = "0.1.0"
+authors = ["Ryszard Narkiewicz <rustedwolf@gmail.com>"]
+
+[dependencies]
+rust-crypto = "0.2.34"
+ansi-escapes = "0.1.0"
