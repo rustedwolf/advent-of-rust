@@ -42,9 +42,8 @@ fn awesome_password_decryption(input: &str) {
     let mut md = Md5::new();
     let mut char_count = 0;
 
-    println!("Decrypting the next password:");
+    print!("Decrypting the next password: ________");
     print!("{}", ansi_escapes::CursorHide);
-    println!("Password: ________");
 
     for i in 0..u64::MAX {
         let input_str = input.to_string() + &i.to_string();
@@ -76,7 +75,7 @@ fn awesome_password_decryption(input: &str) {
         md.reset();
     }
 
-    print!("{}", ansi_escapes::CursorShow);
+    println!("{}", ansi_escapes::CursorShow);
 }
 
 fn show_password(password: &Vec<char>, out_str: &str) {
@@ -89,6 +88,6 @@ fn show_password(password: &Vec<char>, out_str: &str) {
         });
     }
 
-    print!("{}", ansi_escapes::EraseLines(2));
-    println!("{}", password_string);
+    print!("{}", ansi_escapes::CursorBackward(8));
+    print!("{}", password_string);
 }
