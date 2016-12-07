@@ -84,7 +84,6 @@ fn generate_checksum(name: &str) -> String {
         }
     }
     char_counts.push((current_char, char_count));
-
     char_counts.sort_by(|&ca, &cb| if cb.1 != ca.1 { cb.1.cmp(&ca.1) } else { ca.0.cmp(&cb.0) });
 
     for i in 0..5 {
