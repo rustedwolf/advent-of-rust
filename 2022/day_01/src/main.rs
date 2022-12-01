@@ -1,5 +1,6 @@
 use std::fs::read_to_string;
 
+
 fn main() {
     println!("--- Day 1: Calorie Counting ---");
 
@@ -13,17 +14,13 @@ fn main() {
 
 
 fn process_input(input: &str) -> Vec<i32> {
-    let mut calories = 0;
-    let mut calories_list: Vec<i32> = vec![];
-
-    for line in input.lines() {
-        if !line.is_empty() {
-            calories += line.parse::<i32>().unwrap_or(0);
-        } else {
-            calories_list.push(calories);
-            calories = 0;
-        }
-    }
+    let mut calories_list: Vec<i32> = input
+        .split("\n\n")
+        .map(|elf| {
+            elf.split("\n")
+                .map(|cal| cal.parse::<i32>().unwrap_or(0))
+                .sum()
+        }).collect();
 
     calories_list.sort_by(|a, b| b.cmp(a));
 
