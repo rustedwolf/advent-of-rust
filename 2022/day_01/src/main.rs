@@ -17,15 +17,15 @@ fn process_input(input: &str) -> Vec<i32> {
     let mut calories_list: Vec<i32> = vec![];
 
     for line in input.lines() {
-        if line != "" {
-            calories += line.parse::<i32>().unwrap();
+        if !line.is_empty() {
+            calories += line.parse::<i32>().unwrap_or(0);
         } else {
             calories_list.push(calories);
             calories = 0;
         }
     }
 
-    calories_list.sort();
+    calories_list.sort_by(|a, b| b.cmp(a));
 
-    calories_list.iter().rev().map(|&x| x).collect()
+    calories_list
 }
