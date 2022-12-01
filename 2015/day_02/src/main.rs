@@ -42,5 +42,5 @@ fn main() {
     }
 
     println!("The required square feet of paper is {}", paper_amount);
-    println!("Elves also neet {} feet of ribbon", ribbon_length);
+    println!("Elves also need {} feet of ribbon", ribbon_length);
 }

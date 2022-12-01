@@ -1,22 +1,18 @@
-extern crate crypto;
+extern crate md5;
 
-use crypto::md5::Md5;
-use crypto::digest::Digest;
+use md5::{Md5, Digest};
 
 fn get_smallest_number(input: &str, start_text: &str) -> i32 {
-
-    let mut smallest_number = 0i32;
-    let mut md = Md5::new();
+    let mut hasher = Md5::new();
+    let mut smallest_number: i32 = 0;
 
     'search: loop {
-        let input_str = input.to_string() + &smallest_number.to_string();
-        md.input_str(&input_str);
-        let out_str = md.result_str();
+        hasher.update(input.to_string() + &smallest_number.to_string());
+        let string_digest = format!("{:x}", hasher.finalize_reset());
 
-        if out_str.starts_with(&start_text) {
+        if string_digest.starts_with(start_text) {
             break 'search;
-        } else { 
-            md.reset();
+        } else {
             smallest_number += 1;
         }
     }
@@ -26,13 +22,13 @@ fn get_smallest_number(input: &str, start_text: &str) -> i32 {
 
 fn main() {
     println!("--- Day 4: The Ideal Stocking Stuffer ---");
-    
-    let input = "iwrupvqb";
-    let mut smallest_number = get_smallest_number(&input, "00000");
 
+    let input = "iwrupvqb";
+
+    let mut smallest_number = get_smallest_number(&input, "00000");
     println!("The smallest number for 5 leading zero hash is: {:?}", smallest_number);
 
     smallest_number = get_smallest_number(&input, "000000");
-      
     println!("The smallest number for 6 leading zero hash is: {:?}", smallest_number);
+    // Yay! we sort of made sort of a miner
 }
