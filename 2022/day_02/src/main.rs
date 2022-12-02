@@ -43,7 +43,7 @@ fn process_strategy(f: &dyn Fn(char) -> (i32, i32, i32, i32), strategy: &str) ->
 
 
 #[test]
-fn test_process_first_strategy() {
+fn test_process_strategy() {
     let input = String::from("A Y\nB X\nC Z");
     let first_instuctions = |m| { match m {
         'X' => (1, 3, 0, 6),
