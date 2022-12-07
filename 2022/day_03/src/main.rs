@@ -5,9 +5,11 @@ fn main() {
     println!("--- Day 3: Rucksack Reorganization ---");
 
     let input = read_to_string("data/input").unwrap();
+
     let items: Vec<char> = get_reappearing_items(&input);
     let mut sum = sum_priorites(&items);
     println!("The sum of the priorities is {}", sum);
+
     let group_items = get_reappearing_group_items(&input);
     sum = sum_priorites(&group_items);
     println!("The sum of the group priorities is {}", sum);
@@ -96,19 +98,12 @@ fn sum_priorites(items: &Vec<char>) -> u32 {
 
 #[test]
 fn test_get_reappering_item() {
-    let test_str_0 = String::from("vJrwpWtwJgWrhcsFMMfFFhFp");
-    let test_str_1 = String::from("jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL");
-    let test_str_2 = String::from("PmmdzqPrVvPwwTWBwg");
-    let test_str_3 = String::from("wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn");
-    let test_str_4 = String::from("ttgJtRGJQctTZtZT");
-    let test_str_5 = String::from("CrZsJsPPZsGzwwsLwLmpwMDw");
-
-    assert_eq!(get_reappearing_item(&test_str_0), 'p');
-    assert_eq!(get_reappearing_item(&test_str_1), 'L');
-    assert_eq!(get_reappearing_item(&test_str_2), 'P');
-    assert_eq!(get_reappearing_item(&test_str_3), 'v');
-    assert_eq!(get_reappearing_item(&test_str_4), 't');
-    assert_eq!(get_reappearing_item(&test_str_5), 's');
+    assert_eq!(get_reappearing_item(&"vJrwpWtwJgWrhcsFMMfFFhFp"), 'p');
+    assert_eq!(get_reappearing_item(&"jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL"), 'L');
+    assert_eq!(get_reappearing_item(&"PmmdzqPrVvPwwTWBwg"), 'P');
+    assert_eq!(get_reappearing_item(&"wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn"), 'v');
+    assert_eq!(get_reappearing_item(&"ttgJtRGJQctTZtZT"), 't');
+    assert_eq!(get_reappearing_item(&"CrZsJsPPZsGzwwsLwLmpwMDw"), 's');
 }
 
 #[test]
