@@ -13,7 +13,6 @@ fn main() {
     let group_items = get_reappearing_group_items(&input);
     sum = sum_priorites(&group_items);
     println!("The sum of the group priorities is {}", sum);
-
 }
 
 fn get_reappearing_items(input: &str) -> Vec<char> {
@@ -97,13 +96,13 @@ fn sum_priorites(items: &Vec<char>) -> u32 {
 
 
 #[test]
-fn test_get_reappering_item() {
-    assert_eq!(get_reappearing_item(&"vJrwpWtwJgWrhcsFMMfFFhFp"), 'p');
-    assert_eq!(get_reappearing_item(&"jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL"), 'L');
-    assert_eq!(get_reappearing_item(&"PmmdzqPrVvPwwTWBwg"), 'P');
-    assert_eq!(get_reappearing_item(&"wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn"), 'v');
-    assert_eq!(get_reappearing_item(&"ttgJtRGJQctTZtZT"), 't');
-    assert_eq!(get_reappearing_item(&"CrZsJsPPZsGzwwsLwLmpwMDw"), 's');
+fn test_get_reappearing_item() {
+    assert_eq!('p', get_reappearing_item(&"vJrwpWtwJgWrhcsFMMfFFhFp"));
+    assert_eq!('L', get_reappearing_item(&"jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL"));
+    assert_eq!('P', get_reappearing_item(&"PmmdzqPrVvPwwTWBwg"));
+    assert_eq!('v', get_reappearing_item(&"wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn"));
+    assert_eq!('t', get_reappearing_item(&"ttgJtRGJQctTZtZT"));
+    assert_eq!('s', get_reappearing_item(&"CrZsJsPPZsGzwwsLwLmpwMDw"));
 }
 
 #[test]
@@ -114,7 +113,7 @@ fn test_get_reappearing_group_item() {
         String::from("PmmdzqPrVvPwwTWBwg").chars().collect()
     );
 
-    assert_eq!(get_reappearing_group_item(&group_1), 'r');
+    assert_eq!('r', get_reappearing_group_item(&group_1));
 }
 
 #[test]
