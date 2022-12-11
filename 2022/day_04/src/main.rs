@@ -12,6 +12,7 @@ fn main() {
     let pairs_list: Vec<Pairs> = parse_input(&input);
     let containing = count_containing(&pairs_list);
     println!("Total amount of assignment pairs that does one range fully contain the other is: {}", containing);
+
     let overlapping = count_overlapping(&pairs_list);
     println!("Total amount of assignment pairs overlap is: {}", overlapping);
 }
