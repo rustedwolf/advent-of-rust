@@ -12,15 +12,15 @@ fn main() {
     println!("to find first start-of-packet marker you need to process {} characters", message_maker_pos);
 }
 
-fn find_marker(input: &str, length: usize) -> usize {
-    let mut position: usize = length;
+fn find_marker(input: &str, start_length: usize) -> usize {
+    let mut position: usize = start_length;
 
-    for i in length..(input.len()) {
-        let test_slice = &input[(i - length)..i];
+    for i in start_length..input.len() {
+        let test_slice = &input[(i - start_length)..i];
         let mut unique_chars: Vec<char> = test_slice.chars().collect();
         unique_chars.sort();
         unique_chars.dedup();
-        if unique_chars.len() == length {
+        if unique_chars.len() == start_length {
             position = i;
             break;
         }
