@@ -27,8 +27,8 @@ fn main() {
 fn parse_input(input: &str) -> (Vec<CrateStack>, Vec<Instruction>) {
     let lines = input.lines().collect();
     let split_pos: usize = find_end_empty_line_position(&lines);
-    let crate_stacks: Vec<CrateStack> = generate_crate_stack(&lines[..split_pos]);
-    let instructions: Vec<Instruction> = generate_instructions(&lines[(split_pos + 1)..]);
+    let crate_stacks: Vec<CrateStack> = to_crate_stack(&lines[..split_pos]);
+    let instructions: Vec<Instruction> = to_instructions(&lines[(split_pos + 1)..]);
 
     (crate_stacks, instructions)
 }
@@ -46,7 +46,7 @@ fn find_end_empty_line_position(lines: &Vec<&str>) -> usize {
     counter
 }
 
-fn generate_crate_stack(data: &[&str]) -> Vec<CrateStack> {
+fn to_crate_stack(data: &[&str]) -> Vec<CrateStack> {
     let mut lines: Vec<Vec<char>> = data.iter()
         .map(|l| l.chars().collect())
         .collect();
@@ -73,11 +73,11 @@ fn generate_crate_stack(data: &[&str]) -> Vec<CrateStack> {
     stacks
 }
 
-fn generate_instructions(lines: &[&str]) -> Vec<Instruction> {
+fn to_instructions(lines: &[&str]) -> Vec<Instruction> {
     lines.iter().map(|l| get_insctuction(l)).collect()
 }
 
-fn get_insctuction(line: &str) -> Instruction {
+fn to_instruction(line: &str) -> Instruction {
     let parts: Vec<&str> = line.split_whitespace().collect();
     Instruction {
         amount: parts[1].parse::<usize>().unwrap(),
@@ -130,11 +130,11 @@ fn test_find_end_empty_line_position() {
 }
 
 #[test]
-fn test_get_insctuction() {
-    assert_eq!(Instruction{amount: 1, from: 2, to:1}, get_insctuction(&"move 1 from 2 to 1"));
-    assert_eq!(Instruction{amount: 3, from: 1, to:3}, get_insctuction(&"move 3 from 1 to 3"));
-    assert_eq!(Instruction{amount: 2, from: 2, to:1}, get_insctuction(&"move 2 from 2 to 1"));
-    assert_eq!(Instruction{amount: 1, from: 1, to:2}, get_insctuction(&"move 1 from 1 to 2"));
+fn test_to_instruction() {
+    assert_eq!(Instruction{amount: 1, from: 2, to:1}, to_instruction(&"move 1 from 2 to 1"));
+    assert_eq!(Instruction{amount: 3, from: 1, to:3}, to_instruction(&"move 3 from 1 to 3"));
+    assert_eq!(Instruction{amount: 2, from: 2, to:1}, to_instruction(&"move 2 from 2 to 1"));
+    assert_eq!(Instruction{amount: 1, from: 1, to:2}, to_instruction(&"move 1 from 1 to 2"));
 }
 
 #[test]
