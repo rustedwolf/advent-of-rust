@@ -32,15 +32,21 @@ fn find_marker(input: &str, length: usize) -> usize {
 
 #[test]
 fn test_find_marker() {
-    assert_eq!(7, find_marker(&"mjqjpqmgbljsphdztnvjfqwrcgsmlb", 4));
-    assert_eq!(5, find_marker(&"bvwbjplbgvbhsrlpgdmjqwftvncz", 4));
-    assert_eq!(6, find_marker(&"nppdvjthqldpwncqszvftbrmjlhg", 4));
-    assert_eq!(10, find_marker(&"nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 4));
-    assert_eq!(11, find_marker(&"zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 4));
+    let str_0 = &"mjqjpqmgbljsphdztnvjfqwrcgsmlb";
+    let str_1 = &"bvwbjplbgvbhsrlpgdmjqwftvncz";
+    let str_2 = &"nppdvjthqldpwncqszvftbrmjlhg";
+    let str_3 = &"nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg";
+    let str_4 = &"zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw";
 
-    assert_eq!(19, find_marker(&"mjqjpqmgbljsphdztnvjfqwrcgsmlb", 14));
-    assert_eq!(23, find_marker(&"bvwbjplbgvbhsrlpgdmjqwftvncz", 14));
-    assert_eq!(23, find_marker(&"nppdvjthqldpwncqszvftbrmjlhg", 14));
-    assert_eq!(29, find_marker(&"nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 14));
-    assert_eq!(26, find_marker(&"zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 14));
+    assert_eq!(7, find_marker(str_0, 4));
+    assert_eq!(5, find_marker(str_1, 4));
+    assert_eq!(6, find_marker(str_2, 4));
+    assert_eq!(10, find_marker(str_3, 4));
+    assert_eq!(11, find_marker(str_4, 4));
+
+    assert_eq!(19, find_marker(str_0, 14));
+    assert_eq!(23, find_marker(str_1, 14));
+    assert_eq!(23, find_marker(str_2, 14));
+    assert_eq!(29, find_marker(str_3, 14));
+    assert_eq!(26, find_marker(str_4, 14));
 }
