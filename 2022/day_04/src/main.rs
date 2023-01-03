@@ -1,8 +1,7 @@
 use std::fs::read_to_string;
 
 
-#[derive(Debug)]
-#[derive(PartialEq)]
+#[derive(PartialEq, Debug)]
 struct Pairs((u32, u32), (u32, u32));
 
 fn main() {
@@ -53,20 +52,20 @@ fn test_parse_line() {
 
 #[test]
 fn test_is_fully_containing() {
-    assert_eq!(false, is_fully_containing(&Pairs((2,4), (6,8))));
-    assert_eq!(false, is_fully_containing(&Pairs((2,3), (4,5))));
-    assert_eq!(false, is_fully_containing(&Pairs((5,7), (7,9))));
-    assert_eq!(true, is_fully_containing(&Pairs((2,8), (3,7))));
-    assert_eq!(true, is_fully_containing(&Pairs((6,6), (4,6))));
-    assert_eq!(false, is_fully_containing(&Pairs((2,6), (4,8))));
+    assert!(!is_fully_containing(&Pairs((2,4), (6,8))));
+    assert!(!is_fully_containing(&Pairs((2,3), (4,5))));
+    assert!(!is_fully_containing(&Pairs((5,7), (7,9))));
+    assert!(is_fully_containing(&Pairs((2,8), (3,7))));
+    assert!(is_fully_containing(&Pairs((6,6), (4,6))));
+    assert!(!is_fully_containing(&Pairs((2,6), (4,8))));
 }
 
 #[test]
 fn test_are_overlapping() {
-    assert_eq!(false, are_overlapping(&Pairs((2,4), (6,8))));
-    assert_eq!(false, are_overlapping(&Pairs((2,3), (4,5))));
-    assert_eq!(true, are_overlapping(&Pairs((5,7), (7,9))));
-    assert_eq!(true, are_overlapping(&Pairs((2,8), (3,7))));
-    assert_eq!(true, are_overlapping(&Pairs((6,6), (4,6))));
-    assert_eq!(true, are_overlapping(&Pairs((2,6), (4,8))));
+    assert!(!are_overlapping(&Pairs((2,4), (6,8))));
+    assert!(!are_overlapping(&Pairs((2,3), (4,5))));
+    assert!(are_overlapping(&Pairs((5,7), (7,9))));
+    assert!(are_overlapping(&Pairs((2,8), (3,7))));
+    assert!(are_overlapping(&Pairs((6,6), (4,6))));
+    assert!(are_overlapping(&Pairs((2,6), (4,8))));
 }

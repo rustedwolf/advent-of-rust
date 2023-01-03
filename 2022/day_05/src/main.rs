@@ -2,8 +2,7 @@ use std::fs::read_to_string;
 
 type CrateStack = Vec<char>;
 
-#[derive(Debug)]
-#[derive(PartialEq)]
+#[derive(PartialEq, Debug)]
 struct Instruction {
     amount: usize,
     from: usize,
